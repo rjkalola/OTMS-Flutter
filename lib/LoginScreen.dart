@@ -6,6 +6,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otms/custom_widget/PrimaryButton.dart';
 import 'package:otms/model/DropDownValuesResponse.dart';
+import 'package:otms/model/login_response.dart';
 import 'package:otms/service/authorization.dart';
 import 'package:otms/utils/colors.dart';
 
@@ -15,7 +16,6 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
 
 class _LoginScreenState extends State<LoginScreen> {
   bool saving = false;
@@ -43,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: ModalProgressHUD(
         inAsyncCall: saving,
         child: Scaffold(
+          backgroundColor: backgroundColor,
           body: Column(children: [
             Form(
               key: formKey,
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               "Log In",
                               style:
-                                  TextStyle(color: Colors.black, fontSize: 17),
+                                  TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.w500),
                             ),
                           ),
                         ),
@@ -158,7 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: PrimaryButton(
                         buttonText: 'Login with OTP',
                         onPressed: () {
-                          login();
+                          log(phoneController.text.toString().trim());
+                          login(phoneController.text.toString().trim());
                           log('data: onPressed');
                         },
                       ),
@@ -211,9 +213,19 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void login() async {
+  void login(String phoneNumber) async {
     if (formKey.currentState!.validate()) {
+      LoginResponse? response = await RemoteService().login(phoneNumber, "+91");
+      hideProgress();
+      if (response != null) {
+        print("Status:${response.statusCode}");
+        print(response.toJson().toString());
+        if (response.statusCode == 200) {
 
+        } else {
+          // Utils.handleUnauthorized(context, response.Message);
+        }
+      }
     }
   }
 
@@ -221,6 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
     DropDownValuesResponse? response = await RemoteService().getDropDownData();
     hideProgress();
     if (response != null) {
+      print("Status:${response.statusCode}");
       print(response.toJson().toString());
       if (response.statusCode == 200) {
         dropDownValuesResponse = response;
@@ -229,4 +242,5 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
+
 }

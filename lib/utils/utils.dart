@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils {
   // static String appUrl = "http://3.111.141.93/jvm/api/v1/";
-  static String appUrl = "http://104.248.171.12:8000/";
+  static String appUrl = "http://104.248.171.12:8000";
   static String KEY_LOGIN_DATA = "KEY_LOGIN_DATA";
 
   static Future<String?> getLoginData() async {
@@ -39,7 +39,7 @@ class Utils {
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black87,
           textColor: Colors.white,
-          fontSize: 14.0);
+          fontSize: 14.0,);
     }
   }
 

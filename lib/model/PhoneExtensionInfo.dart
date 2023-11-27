@@ -9,14 +9,14 @@ PhoneExtensionInfo phoneExtensionInfoFromJson(String str) =>
 
 class PhoneExtensionInfo {
   PhoneExtensionInfo({
-    required this.id,
-    required this.extension,
+    this.id,
+    this.extension,
     this.flag,
     this.position,
   });
 
-  String id;
-  String extension;
+  String? id;
+  String? extension;
   String? flag;
   int? position;
 
