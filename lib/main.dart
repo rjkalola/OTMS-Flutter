@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "OTMS App",
-      home: VerifyOtpScreen(),
+      home: SignUpScreen(),
       theme: ThemeData(primarySwatch: Colors.lightBlue,scaffoldBackgroundColor: backgroundColor),
     );
   }

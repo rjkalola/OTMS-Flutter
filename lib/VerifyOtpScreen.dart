@@ -68,9 +68,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                 child: SingleChildScrollView(
                   child: Column(children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(14, 18, 0, 0),
+                      padding: EdgeInsets.fromLTRB(14, 18, 0, 0),
                       child: Stack(
-                        children: const <Widget>[
+                        children:  <Widget>[
                           Positioned.fill(
                             child: Align(
                               alignment: Alignment.center,
@@ -85,10 +85,15 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                           ),
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Icon(
-                              Icons.arrow_back,
-                              size: 24,
-                              color: Color(0xff000000),
+                            child: InkWell(
+                              child: Icon(
+                                Icons.arrow_back,
+                                size: 24,
+                                color: Color(0xff000000),
+                              ),
+                              onTap: (){
+                                debugPrint('Back');
+                              },
                             ),
                           ),
                         ],
@@ -97,7 +102,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 30, 16, 20),
+                        padding: const EdgeInsets.fromLTRB(16, 30, 16, 22),
                         child: Text("Enter the four-digit code that you were sent over mobile SMS.",
                             textAlign: TextAlign.start,
                             style: TextStyle(
@@ -359,25 +364,31 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         ],
                       ),
                     ),
-                    RichText(
-                        text: TextSpan(
-                          text: 'Click On ',
-                          style: const TextStyle(fontSize: 14, color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Resend',
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    debugPrint('The button is clicked!');
-                                  },
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.w500
-                                )),
-                            const TextSpan(text: ' if you do not receive after 2 minutes'),
-                          ],
-                        )
+                    SizedBox(
+                      height: 28,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                      child: RichText(
+                          text: TextSpan(
+                            text: 'Click On ',
+                            style: const TextStyle(fontSize: 14, color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: 'Resend,',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      debugPrint('The button is clicked!');
+                                    },
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: defaultAccentColor,
+                                    fontWeight: FontWeight.w500
+                                  )),
+                              const TextSpan(text: ' if you do not receive after 2 minutes'),
+                            ],
+                          )
+                      ),
                     )
                   ]),
                 ),
