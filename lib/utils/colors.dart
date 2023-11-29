@@ -6,3 +6,5 @@ const secondaryColor = Colors.grey;
 const primaryTextColor = Colors.black;
 const defaultAccentColor = Color(0xff0065ff);
 const backgroundColor = Color(0xffffffff);
+const titleBgColor = Color(0xffeeefef);
+const snackBarColor = Color(0xff484848);

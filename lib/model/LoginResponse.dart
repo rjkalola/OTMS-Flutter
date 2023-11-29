@@ -11,21 +11,24 @@ LoginResponse loginResponseFromJson(String str) =>
 
 class LoginResponse {
   LoginResponse({
-    required this.access_token,
-    required this.token_type,
-    required this.error,
-    required this.statusCode,
+    this.access_token,
+    this.token_type,
+    this.error,
+    this.detail,
+    this.statusCode,
   });
 
   String? access_token;
   String? token_type;
   String? error;
+  String? detail;
   int? statusCode;
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
         access_token: json["access_token"],
         token_type: json["token_type"],
         error: json["error"],
+        detail: json["detail"],
         statusCode: json["statusCode"],
       );
 
@@ -33,6 +36,7 @@ class LoginResponse {
         "access_token": access_token,
         "token_type": token_type,
         "error": error,
+        "detail": detail,
         "statusCode": statusCode,
       };
 }

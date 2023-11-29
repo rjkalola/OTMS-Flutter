@@ -14,10 +14,17 @@ class DropDownValuesResponse {
     required this.extensions,
     required this.countries,
     required this.currencies,
-    required this.statusCode,
+    this.error,
+    this.statusCode,
   });
 
-  DropDownValuesResponse.fromJson(dynamic json) {
+  List<PhoneExtensionInfo>? extensions;
+  List<String>? countries;
+  List<String>? currencies;
+  int? statusCode;
+  String? error;
+
+  DropDownValuesResponse.fromJson(Map<String, dynamic> json) {
     if (json['extensions'] != null) {
       extensions = [];
       json['extensions'].forEach((v) {
@@ -36,19 +43,16 @@ class DropDownValuesResponse {
         currencies?.add(v.toString());
       });
     }
+    error: json['error'];
     statusCode: json["statusCode"];
   }
-
-  List<PhoneExtensionInfo>? extensions;
-  List<String>? countries;
-  List<String>? currencies;
-  int? statusCode;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['extensions'] = extensions?.map((v) => v.toJson()).toList();
     map['countries'] = countries?.map((v) => v).toList();
     map['currencies'] = currencies?.map((v) => v).toList();
+    map['error'] = error;
     map['statusCode'] = statusCode;
     return map;
   }

@@ -1,28 +1,32 @@
-import 'dart:developer';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:otms/custom_widget/PrimaryButton.dart';
-import 'package:otms/service/authorization.dart';
+import 'package:otms/DashboardScreen.dart';
 import 'package:otms/utils/colors.dart';
-import 'package:otms/utils/utils.dart';
 
-import 'model/DropDownValuesResponse.dart';
-import 'model/login_response.dart';
+import '../../model/DropDownValuesResponse.dart';
+import '../../model/LoginResponse.dart';
+import '../../utils/utils.dart';
+import '../data/authorization_service.dart';
 
 class VerifyOtpScreen extends StatefulWidget {
-  const VerifyOtpScreen({super.key});
+  final String extension, phoneNumber;
+
+  const VerifyOtpScreen(
+      {super.key, required this.extension, required this.phoneNumber});
 
   @override
-  State<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
+  State<VerifyOtpScreen> createState() =>
+      _VerifyOtpScreenState(extension, phoneNumber);
 }
 
 class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
+  String extension, phoneNumber;
+
+  _VerifyOtpScreenState(this.extension, this.phoneNumber);
+
   bool saving = false;
-  String phoneExtension = "+91";
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController box1 = TextEditingController();
   TextEditingController box2 = TextEditingController();
@@ -45,8 +49,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
   @override
   void initState() {
-    showProgress();
-    getDropDownDataResponse();
+    print("Extension:" + extension);
+    print("phoneNumber:" + phoneNumber);
     super.initState();
   }
 
@@ -70,7 +74,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     Padding(
                       padding: EdgeInsets.fromLTRB(14, 18, 0, 0),
                       child: Stack(
-                        children:  <Widget>[
+                        children: <Widget>[
                           Positioned.fill(
                             child: Align(
                               alignment: Alignment.center,
@@ -78,7 +82,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                 "Verify Otp",
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 17,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
@@ -91,8 +95,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                 size: 24,
                                 color: Color(0xff000000),
                               ),
-                              onTap: (){
-                                debugPrint('Back');
+                              onTap: () {
+                                Navigator.of(context).pop();
                               },
                             ),
                           ),
@@ -103,26 +107,25 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(16, 30, 16, 22),
-                        child: Text("Enter the four-digit code that you were sent over mobile SMS.",
+                        child: Text(
+                            "Enter the four-digit code that you were sent over mobile SMS.",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 color: defaultAccentColor,
-                                fontSize: 18,
+                                fontSize: 19,
                                 fontWeight: FontWeight.w500)),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                       child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Container(
-                            width: 50,
-                            height: 60,
+                            width: 44,
+                            height: 56,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xffc6c6c6)),
+                                border: Border.all(color: Color(0xffc6c6c6)),
                                 borderRadius: BorderRadius.circular(0)),
                             child: TextFormField(
                               onChanged: (value) {
@@ -132,8 +135,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                               },
                               controller: box1,
                               textAlign: TextAlign.center,
-                              textAlignVertical:
-                              TextAlignVertical.center,
+                              textAlignVertical: TextAlignVertical.center,
                               maxLength: 1,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
@@ -146,7 +148,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                   fontFamily: 'PlusJakartaSans',
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.w500),
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
@@ -157,25 +159,22 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             width: 12,
                           ),
                           Container(
-                            width: 50,
-                            height: 60,
+                            width: 44,
+                            height: 56,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xffc6c6c6)),
+                                border: Border.all(color: Color(0xffc6c6c6)),
                                 borderRadius: BorderRadius.circular(0)),
                             child: TextFormField(
                               onChanged: (value) {
                                 if (value.length == 1) {
                                   FocusScope.of(context).nextFocus();
                                 } else {
-                                  FocusScope.of(context)
-                                      .previousFocus();
+                                  FocusScope.of(context).previousFocus();
                                 }
                               },
                               controller: box2,
                               textAlign: TextAlign.center,
-                              textAlignVertical:
-                              TextAlignVertical.center,
+                              textAlignVertical: TextAlignVertical.center,
                               maxLength: 1,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
@@ -188,7 +187,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                   fontFamily: 'PlusJakartaSans',
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.w500),
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
@@ -199,25 +198,22 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             width: 12,
                           ),
                           Container(
-                            width: 50,
-                            height: 60,
+                            width: 44,
+                            height: 56,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xffc6c6c6)),
+                                border: Border.all(color: Color(0xffc6c6c6)),
                                 borderRadius: BorderRadius.circular(0)),
                             child: TextFormField(
                               onChanged: (value) {
                                 if (value.length == 1) {
                                   FocusScope.of(context).nextFocus();
                                 } else {
-                                  FocusScope.of(context)
-                                      .previousFocus();
+                                  FocusScope.of(context).previousFocus();
                                 }
                               },
                               controller: box3,
                               textAlign: TextAlign.center,
-                              textAlignVertical:
-                              TextAlignVertical.center,
+                              textAlignVertical: TextAlignVertical.center,
                               maxLength: 1,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
@@ -230,7 +226,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                   fontFamily: 'PlusJakartaSans',
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.w500),
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
@@ -241,25 +237,22 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             width: 12,
                           ),
                           Container(
-                            width: 50,
-                            height: 60,
+                            width: 44,
+                            height: 56,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xffc6c6c6)),
+                                border: Border.all(color: Color(0xffc6c6c6)),
                                 borderRadius: BorderRadius.circular(0)),
                             child: TextFormField(
                               onChanged: (value) {
                                 if (value.length == 1) {
                                   FocusScope.of(context).nextFocus();
                                 } else {
-                                  FocusScope.of(context)
-                                      .previousFocus();
+                                  FocusScope.of(context).previousFocus();
                                 }
                               },
                               controller: box4,
                               textAlign: TextAlign.center,
-                              textAlignVertical:
-                              TextAlignVertical.center,
+                              textAlignVertical: TextAlignVertical.center,
                               maxLength: 1,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
@@ -272,7 +265,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                   fontFamily: 'PlusJakartaSans',
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.w500),
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
@@ -283,25 +276,22 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             width: 12,
                           ),
                           Container(
-                            width: 50,
-                            height: 60,
+                            width: 44,
+                            height: 56,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xffc6c6c6)),
+                                border: Border.all(color: Color(0xffc6c6c6)),
                                 borderRadius: BorderRadius.circular(0)),
                             child: TextFormField(
                               onChanged: (value) {
                                 if (value.length == 1) {
                                   FocusScope.of(context).nextFocus();
                                 } else {
-                                  FocusScope.of(context)
-                                      .previousFocus();
+                                  FocusScope.of(context).previousFocus();
                                 }
                               },
                               controller: box5,
                               textAlign: TextAlign.center,
-                              textAlignVertical:
-                              TextAlignVertical.center,
+                              textAlignVertical: TextAlignVertical.center,
                               maxLength: 1,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
@@ -314,7 +304,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                   fontFamily: 'PlusJakartaSans',
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.w500),
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
@@ -325,23 +315,20 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             width: 12,
                           ),
                           Container(
-                            width: 50,
-                            height: 60,
+                            width: 44,
+                            height: 56,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xffc6c6c6)),
+                                border: Border.all(color: Color(0xffc6c6c6)),
                                 borderRadius: BorderRadius.circular(0)),
                             child: TextFormField(
                               onChanged: (value) {
                                 if (value.isEmpty) {
-                                  FocusScope.of(context)
-                                      .previousFocus();
+                                  FocusScope.of(context).previousFocus();
                                 }
                               },
                               controller: box6,
                               textAlign: TextAlign.center,
-                              textAlignVertical:
-                              TextAlignVertical.center,
+                              textAlignVertical: TextAlignVertical.center,
                               maxLength: 1,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.done,
@@ -354,7 +341,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                   fontFamily: 'PlusJakartaSans',
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.w500),
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
@@ -372,23 +359,23 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       child: RichText(
                           text: TextSpan(
                             text: 'Click On ',
-                            style: const TextStyle(fontSize: 14, color: Colors.black),
+                            style:
+                            const TextStyle(fontSize: 14, color: Colors.black),
                             children: <TextSpan>[
                               TextSpan(
                                   text: 'Resend,',
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      debugPrint('The button is clicked!');
+                                      resendOTP();
                                     },
                                   style: const TextStyle(
-                                    fontSize: 15,
-                                    color: defaultAccentColor,
-                                    fontWeight: FontWeight.w500
-                                  )),
-                              const TextSpan(text: ' if you do not receive after 2 minutes'),
+                                      fontSize: 16,
+                                      color: defaultAccentColor,
+                                      fontWeight: FontWeight.w500)),
+                              const TextSpan(
+                                  text: ' if you do not receive after 2 minutes'),
                             ],
-                          )
-                      ),
+                          )),
                     )
                   ]),
                 ),
@@ -396,20 +383,46 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             ),
             Container(
               width: double.infinity,
-              height: 60,
+              height: 50,
               color: defaultAccentColor,
               child: MaterialButton(
                 onPressed: () {
-                  signUp();
+                  if (box1.text
+                      .toString()
+                      .isNotEmpty &&
+                      box2.text
+                          .toString()
+                          .isNotEmpty &&
+                      box3.text
+                          .toString()
+                          .isNotEmpty &&
+                      box4.text
+                          .toString()
+                          .isNotEmpty &&
+                      box5.text
+                          .toString()
+                          .isNotEmpty &&
+                      box6.text
+                          .toString()
+                          .isNotEmpty) {
+                    verifyOTP(box1.text.toString() +
+                        box2.text.toString() +
+                        box3.text.toString() +
+                        box4.text.toString() +
+                        box5.text.toString() +
+                        box6.text.toString());
+                  } else {
+                    Utils.showSnackBarMessage(context, "Enter OTP");
+                  }
                 },
                 color: defaultAccentColor,
                 elevation: 0,
-                height: 60,
+                height: 50,
                 splashColor: Colors.white.withAlpha(30),
                 child: Text("Submit",
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       fontSize: 16,
                     )),
               ),
@@ -422,9 +435,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
   void signUp() async {
     // if (formKey.currentState!.validate()) {
-      // String firstName = firstNameController.text.toString().trim();
-      // String lastName = lastNameController.text.toString().trim();
-      // String phoneNumber = phoneNumberController.text.toString().trim();
+    // String firstName = firstNameController.text.toString().trim();
+    // String lastName = lastNameController.text.toString().trim();
+    // String phoneNumber = phoneNumberController.text.toString().trim();
     //   LoginResponse? response = await RemoteService().signUp(firstName, lastName, phoneNumber, phoneExtension);
     //   hideProgress();
     //   if (response != null) {
@@ -440,15 +453,44 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
     // }
   }
 
-  void getDropDownDataResponse() async {
-    DropDownValuesResponse? response = await RemoteService().getDropDownData();
-    hideProgress();
-    if (response != null) {
-      print("Status:${response.statusCode}");
-      print(response.toJson().toString());
-      if (response.statusCode == 200) {
-      } else {
-        // Utils.handleUnauthorized(context, response.Message);
+  void resendOTP() async {
+    if (formKey.currentState!.validate()) {
+      showProgress();
+      LoginResponse? response =
+      await RemoteService().login(phoneNumber, extension);
+      hideProgress();
+      if (response != null) {
+        if (response.statusCode == 200) {} else {
+          if (context.mounted) {
+            Utils.showSnackBarMessage(context, response.detail!);
+          }
+        }
+      }
+    }
+  }
+
+  void verifyOTP(String otp) async {
+    if (formKey.currentState!.validate()) {
+      showProgress();
+      LoginResponse? response =
+      await RemoteService().verifyOTP(phoneNumber, extension, otp);
+      hideProgress();
+      if (response != null) {
+        if (response.statusCode == 200) {
+          if (context.mounted) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DashboardScreen()
+                ),
+                ModalRoute.withName("/Home")
+            );
+          }
+        }else {
+          if (context.mounted) {
+            Utils.showSnackBarMessage(context, response.detail!);
+          }
+        }
       }
     }
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'colors.dart';
+
 
 
 class Utils {
@@ -54,6 +56,16 @@ class Utils {
           textColor: Colors.white,
           fontSize: 14.0);
     }
+  }
+
+  static showSnackBarMessage(BuildContext context, String message){
+    ScaffoldMessenger.of(context).showSnackBar(
+       SnackBar(
+        content:
+        Text(message),
+        backgroundColor: snackBarColor,
+      ),
+    );
   }
 
   static haxColor(String colorHexCode) {
