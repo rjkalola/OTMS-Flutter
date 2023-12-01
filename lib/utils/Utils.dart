@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:otms/utils/AppConstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'colors.dart';
@@ -10,15 +11,26 @@ class Utils {
   // static String appUrl = "http://3.111.141.93/jvm/api/v1/";
   static String appUrl = "http://104.248.171.12:8000";
   static String KEY_LOGIN_DATA = "KEY_LOGIN_DATA";
+  static String KEY_ACCESS_TOKEN = "KEY_ACCESS_TOKEN";
 
   static Future<String?> getLoginData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(Utils.KEY_LOGIN_DATA);
+    return prefs.getString(AppConstants.sharedPreferenceKey.keyLoginData);
   }
 
   static saveLoginData(String userdata) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(Utils.KEY_LOGIN_DATA, userdata);
+    prefs.setString(AppConstants.sharedPreferenceKey.keyLoginData, userdata);
+  }
+
+  static Future<String> getAccessToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(AppConstants.sharedPreferenceKey.keyAccessToken) ?? "";
+  }
+
+  static saveAccessToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(AppConstants.sharedPreferenceKey.keyAccessToken, token);
   }
 
   static clearALlSharesPreferencesData() async {

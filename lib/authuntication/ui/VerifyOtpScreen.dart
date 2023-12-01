@@ -7,7 +7,7 @@ import 'package:otms/utils/colors.dart';
 
 import '../../model/DropDownValuesResponse.dart';
 import '../../model/LoginResponse.dart';
-import '../../utils/utils.dart';
+import '../../utils/Utils.dart';
 import '../data/authorization_service.dart';
 
 class VerifyOtpScreen extends StatefulWidget {
@@ -477,6 +477,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
       hideProgress();
       if (response != null) {
         if (response.statusCode == 200) {
+          Utils.saveAccessToken(response.access_token!);
           if (context.mounted) {
             Navigator.pushAndRemoveUntil(
                 context,

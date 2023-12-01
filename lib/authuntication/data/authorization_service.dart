@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:otms/model/DropDownValuesResponse.dart';
 import '../../model/LoginResponse.dart';
-import '../../utils/utils.dart';
+import '../../utils/Utils.dart';
 
 class RemoteService {
   Future<LoginResponse?> login(String phoneNumber, String phoneExtension) async {

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otms/utils/colors.dart';
-import 'package:otms/utils/utils.dart';
+import 'package:otms/utils/Utils.dart';
 
 import '../../model/DropDownValuesResponse.dart';
 import '../../model/LoginResponse.dart';

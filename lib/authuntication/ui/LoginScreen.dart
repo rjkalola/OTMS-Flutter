@@ -11,7 +11,7 @@ import 'package:otms/authuntication/ui/VerifyOtpScreen.dart';
 import 'package:otms/custom_widget/PrimaryButton.dart';
 import 'package:otms/model/DropDownValuesResponse.dart';
 import 'package:otms/model/LoginResponse.dart';
-import '../../utils/utils.dart';
+import '../../utils/Utils.dart';
 import '../data/authorization_service.dart';
 import 'package:otms/utils/colors.dart';
 
@@ -96,7 +96,12 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                             ),
                             onTap: () {
-                              Navigator.of(context).pop();
+                              if (Navigator.canPop(context)) {
+                                // Navigator.of(context).maybePop();
+                                Navigator.of(context, rootNavigator: true).pop(context);
+                              } else {
+                                SystemNavigator.pop();
+                              }
                             },
                           ),
                         ),
@@ -116,6 +121,8 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       InkWell(
                         child: Row(children: [

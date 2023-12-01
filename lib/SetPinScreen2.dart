@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otms/DashboardScreen.dart';
-import 'package:otms/utils/utils.dart';
+import 'package:otms/utils/Utils.dart';
 
 class SetPinScreen2 extends StatefulWidget {
   SetPinScreen2({Key? key}) : super(key: key);
