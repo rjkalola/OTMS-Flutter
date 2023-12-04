@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:otms/authuntication/ui/HomeTab.dart';
 import 'package:otms/utils/colors.dart';
 
 import 'SplashScreen.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "OTMS App",
-      home: SplashScreen(),
+      home: HomeTab(),
       theme: ThemeData(primarySwatch: Colors.lightBlue,scaffoldBackgroundColor: backgroundColor),
     );
   }
